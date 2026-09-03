@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Health Sync — Personal Health Record Sync</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#fff; --ink:#14181f; --mut:#5a6472;
+    --line:#e3e7ec; --accent:#0b7285;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --bg:#0e1116; --card:#161b22; --ink:#e7ecf2; --mut:#9aa5b4;
+           --line:#252c36; --accent:#4dc4d8; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+  .wrap{max-width:720px;margin:0 auto;padding:48px 20px 80px}
+  header{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:32px}
+  h1{font-size:28px;margin:0 0 6px;letter-spacing:-.02em}
+  .sub{color:var(--mut);margin:0}
+  h2{font-size:18px;margin:36px 0 10px;letter-spacing:-.01em}
+  p{margin:0 0 12px}
+  ul{margin:0 0 12px;padding-left:22px}
+  li{margin:4px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:18px 0}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:14px}
+  a{color:var(--accent)}
+  footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:var(--mut);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Health Sync</h1>
+  <p class="sub">A private tool that keeps one person's own medical records in sync.</p>
+</header>
+
+<h2>What this app does</h2>
+<p>Health Sync connects to a health system's patient API. It downloads the account
+holder's own medical records and stores them on the account holder's personal
+computer. The owner can then read, search, and chart their own health history
+offline.</p>
+
+<h2>Who it is for</h2>
+<p>This is a personal, single-user tool. It is not a commercial product. It is not
+offered to the public. There are no accounts, no sign-up, and no other users.</p>
+
+<h2>What data it reads</h2>
+<ul>
+  <li>Patient demographics</li>
+  <li>Lab results and diagnostic reports</li>
+  <li>Conditions and problem list</li>
+  <li>Medications</li>
+  <li>Allergies and intolerances</li>
+  <li>Immunizations</li>
+  <li>Procedures</li>
+  <li>Vital signs</li>
+  <li>Clinical documents</li>
+</ul>
+<p>The app only reads. It never writes to, changes, or deletes anything in a
+medical record.</p>
+
+<h2>Where the data goes</h2>
+<div class="card">
+  <p><strong>The data stays on one personal computer.</strong></p>
+  <p>Health Sync has no server and no database in the cloud. It does not send
+  records to any third party. It does not sell, share, or analyze data for any
+  other party. Nobody else can read the downloaded records.</p>
+</div>
+
+<h2>Authorization</h2>
+<p>The app uses the SMART on FHIR standard with OAuth 2.0. The owner signs in on
+the health system's own web page. The app never sees or stores the password. The
+health system returns a token. The owner can cancel that token at any time from
+the patient portal.</p>
+
+<h2>Redirect URL</h2>
+<p><code>https://healthsync.dancykier.com/callback</code></p>
+<p>This page receives the one-time authorization code after sign-in. It runs only
+in the browser. It does not send the code anywhere. It does not store the code.</p>
+
+<h2>Security</h2>
+<ul>
+  <li>The client secret is stored in the macOS Keychain.</li>
+  <li>Tokens are stored in the macOS Keychain.</li>
+  <li>Records are stored on an encrypted local disk.</li>
+  <li>No credentials are kept in source code.</li>
+</ul>
+
+<h2>Contact</h2>
+<p><a href="mailto:healthsync@dancykier.com">healthsync@dancykier.com</a></p>
+
+<footer>
+  Health Sync &middot; a personal project of DNZ Consulting LLC &middot;
+  not a medical device &middot; not medical advice.
+</footer>
+
+</div>
+</body>
+</html>

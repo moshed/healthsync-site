@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Health Sync — Authorization Code</title>
+<style>
+  :root{ --bg:#f7f8fa; --card:#fff; --ink:#14181f; --mut:#5a6472;
+         --line:#e3e7ec; --accent:#0b7285; --ok:#0f7b4f; --bad:#b3261e; }
+  @media (prefers-color-scheme:dark){
+    :root{ --bg:#0e1116; --card:#161b22; --ink:#e7ecf2; --mut:#9aa5b4;
+           --line:#252c36; --accent:#4dc4d8; --ok:#4ade80; --bad:#f87171; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+  .wrap{max-width:640px;margin:0 auto;padding:56px 20px}
+  h1{font-size:24px;margin:0 0 8px;letter-spacing:-.02em}
+  .sub{color:var(--mut);margin:0 0 28px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0}
+  .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:0 0 8px}
+  .val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;
+       word-break:break-all;background:var(--bg);border:1px solid var(--line);
+       border-radius:6px;padding:12px;margin:0}
+  button{margin-top:12px;background:var(--accent);color:#fff;border:0;border-radius:7px;
+         padding:10px 16px;font-size:15px;font-weight:600;cursor:pointer}
+  button:active{opacity:.8}
+  .ok{color:var(--ok)} .bad{color:var(--bad)}
+  .note{color:var(--mut);font-size:14px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="head">Authorization Code</h1>
+  <p class="sub" id="sub">Reading the response&hellip;</p>
+  <div id="out"></div>
+  <p class="note">This page runs only in your browser. It does not send the code
+  anywhere. Close the tab when you are done. The code expires in a few minutes and
+  works one time only.</p>
+</div>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var code  = q.get('code');
+  var state = q.get('state');
+  var err   = q.get('error');
+  var desc  = q.get('error_description');
+  var head = document.getElementById('head');
+  var sub  = document.getElementById('sub');
+  var out  = document.getElementById('out');
+
+  function card(label, value, mono) {
+    var d = document.createElement('div');
+    d.className = 'card';
+    var l = document.createElement('p');
+    l.className = 'lbl';
+    l.textContent = label;
+    var v = document.createElement('pre');
+    v.className = 'val';
+    v.textContent = value;
+    d.appendChild(l);
+    d.appendChild(v);
+    if (mono) {
+      var b = document.createElement('button');
+      b.textContent = 'Copy';
+      b.onclick = function () {
+        navigator.clipboard.writeText(value).then(function () {
+          b.textContent = 'Copied';
+          setTimeout(function () { b.textContent = 'Copy'; }, 1600);
+        });
+      };
+      d.appendChild(b);
+    }
+    out.appendChild(d);
+  }
+
+  if (err) {
+    head.textContent = 'Sign-in failed';
+    head.className = 'bad';
+    sub.textContent = 'The health system refused the request.';
+    card('Error', err, false);
+    if (desc) card('Detail', desc, false);
+    return;
+  }
+
+  if (!code) {
+    head.textContent = 'Nothing to show';
+    sub.textContent = 'Open this page from the sign-in link, not directly.';
+    return;
+  }
+
+  head.textContent = 'Sign-in worked';
+  head.className = 'ok';
+  sub.textContent = 'Copy the code below and paste it into Health Sync.';
+  card('Authorization code', code, true);
+  if (state) card('State', state, true);
+})();
+</script>
+</body>
+</html>
